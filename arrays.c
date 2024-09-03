@@ -4,6 +4,7 @@ int insert(int LA[],int N,int k,int value);
 int delete(int LA[],int N,int K);
 void display(int LA[],int N);
 int linearsearch(int LA[],int N,int value);
+void BubbleSort(int LA[],int N);
 int main(){
     // define an array
     int LA[size];
@@ -20,7 +21,8 @@ int main(){
         printf("\n 2:delete");
         printf("\n 3:display");
         printf("\n 4:search");
-        printf("\n 5:exit");
+        printf("\n 5:Bubble Sort");
+        printf("\n 6:exit");
         printf("\n Enter your choices: ");
         scanf("%d",&choice);
         switch(choice){
@@ -59,7 +61,12 @@ int main(){
                  printf("\nthe elements %d, present at this location %d",value,K);
             }
             break;
+
             case 5:
+            BubbleSort(LA,N);
+            break;
+
+            case 6:
             exit(0);
 
             default:
@@ -67,7 +74,7 @@ int main(){
             break;
         }
        
-    }while(choice!=5);
+    }while(choice!=6);
     return 0;
 }
 int insert(int LA[],int N,int K,int value){
@@ -144,4 +151,25 @@ int linearsearch(int LA[],int N,int value){
         return K;
     }
     
+}
+void BubbleSort(int LA[],int N){
+    if(N==0){
+        printf("\n Array is empty");
+    }
+    else{
+        int i;
+        for(i=1;i<N;i++){
+            int p=0;
+            while(p<=N-i){
+                if(LA[p]>LA[p+1]){
+                    int temp;
+                    temp=LA[p];
+                    LA[p]=LA[p+1];
+                    LA[p+1]=temp;
+                }
+                p=p+1;
+            }
+        }
+        printf("\nArray is Sorted");
+    }
 }
