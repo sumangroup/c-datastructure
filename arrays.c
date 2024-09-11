@@ -1,20 +1,28 @@
 #include<stdio.h>
-#define size 5
+#define size 20
 int insert(int LA[],int N,int k,int value);
 int delete(int LA[],int N,int K);
 void display(int LA[],int N);
+void display_P(int *p,int N);
 int linearsearch(int LA[],int N,int value);
 void BubbleSort(int LA[],int N);
+void Insertionsort(int LA[],int N);
+int MIN(int LA[],int N,int K);
+void SelectionSort(int LA[],int N);
+int MAX(int LA[],int N,int K);
+void ShellSort(int LA[],int N);
+void Radix(int LA[],int N);
 int main(){
     // define an array
-    int LA[size];
+    int LA[size]={321,478,536,121,213,419};
     // number of elements present in an array
-    int N=0;
+    int N=6;
     // position
     int K;
     // value
     int value;
-
+    // location
+    int LOC;
     int choice;
     do{
         printf("\n 1:insert");
@@ -22,7 +30,14 @@ int main(){
         printf("\n 3:display");
         printf("\n 4:search");
         printf("\n 5:Bubble Sort");
-        printf("\n 6:exit");
+        printf("\n 6:Insertion Sort");
+        printf("\n 7:Min");
+        printf("\n 8:Selection Sort");
+        printf("\n 9:Max");
+        printf("\n 10:display_P");
+        printf("\n 11:Shell Sort");
+        printf("\n 12:Radix Sort");
+        printf("\n 0:exit");
         printf("\n Enter your choices: ");
         scanf("%d",&choice);
         switch(choice){
@@ -67,6 +82,46 @@ int main(){
             break;
 
             case 6:
+            Insertionsort(LA,N);
+            break;
+
+            case 7:
+            LOC=MIN(LA,N,0);
+            if(LOC==-1){
+                printf("\n Array is empty");
+            }
+            else{
+                printf("\n MIN: LOC:%d and element:%d",LOC,LA[LOC]);
+            }
+            break;
+
+            case 8:
+            SelectionSort(LA,N);
+            break;
+
+            case 9:
+            LOC=MAX(LA,N,0);
+            if(LOC==-1){
+                printf("\n Array is empty");
+            }
+            else{
+                printf("\n MAX: LOC:%d and element:%d",LOC,LA[LOC]);
+            }
+            break;
+            
+            case 10:
+            display_P(LA,N);
+            break;
+            
+            case 11:
+            ShellSort(LA,N);
+            break;
+
+            case 12:
+            Radix(LA,N);
+            break;
+
+            case 0:
             exit(0);
 
             default:
@@ -74,7 +129,7 @@ int main(){
             break;
         }
        
-    }while(choice!=6);
+    }while(choice!=0);
     return 0;
 }
 int insert(int LA[],int N,int K,int value){
@@ -89,7 +144,7 @@ int insert(int LA[],int N,int K,int value){
             N=N+1;
         }
         else if(K>N-1){
-             LA[N]=value;
+            LA[N]=value;
             N=N+1;
         }
         else{
@@ -116,7 +171,7 @@ int delete(int LA[],int N,int K){
         else{
             printf("\n%d this element is deleted",LA[K]);
             int J=K;
-            while(J<=N-1){
+            while(J<N){
                 LA[J]=LA[J+1];
                 J=J+1;
             }
@@ -142,6 +197,7 @@ void display(int LA[],int N){
 int linearsearch(int LA[],int N,int value){
     int K=0;
     while(LA[K]!=value && K++<N);
+    // insert
     if(N==K-1){
         LA[K-1]=value;
         printf("%d",LA[K-1]);
@@ -153,16 +209,17 @@ int linearsearch(int LA[],int N,int value){
     
 }
 void BubbleSort(int LA[],int N){
+    int i,p,temp;
     if(N==0){
         printf("\n Array is empty");
     }
     else{
         int i;
         for(i=1;i<N;i++){
-            int p=0;
+            p=0;
             while(p<=N-i){
                 if(LA[p]>LA[p+1]){
-                    int temp;
+                    temp;
                     temp=LA[p];
                     LA[p]=LA[p+1];
                     LA[p+1]=temp;
@@ -171,5 +228,138 @@ void BubbleSort(int LA[],int N){
             }
         }
         printf("\nArray is Sorted");
+    }
+}
+void Insertionsort(int LA[],int N){
+    if(N==0){
+        printf("\n Array is empty");
+    }
+    else{
+        int i,j,k;
+        for(i=1;i<N;i++){
+            k=LA[i];
+            for(j=i-1;j>=0 &&k<LA[j];j--){
+                    LA[j+1]=LA[j];
+            }
+            LA[j+1]=k;
+        }
+        printf("\nArray is Sorted");
+    }
+}
+
+int MIN(int LA[],int N,int K){
+    int LOC=K;
+    int Min=LA[K];
+    int i;
+    if(N==0){
+         return -1;
+    }
+    else{
+        for(i=K+1;i<N;i++){
+            if(Min>LA[i]){
+                Min=LA[i];
+                LOC=i;
+            }
+        }
+        return LOC;
+    }
+}
+
+void SelectionSort(int LA[],int N){
+    if(N==0){
+        printf("\n Array is empty");
+    }
+    else{
+        int i,LOC,temp;
+        for(i=0;i<N;i++){
+            LOC=MIN(LA,N,i);
+            temp=LA[i];
+            LA[i]=LA[LOC];
+            LA[LOC]=temp;
+        }
+        printf("\nArray is Sorted");
+    }
+}
+int MAX(int LA[],int N,int K){
+    int LOC=K;
+    int Max=LA[K];
+    int i;
+    if(N==0){
+         return -1;
+    }
+    else{
+        for(i=K+1;i<N;i++){
+            if(Max<LA[i]){
+                Max=LA[i];
+                LOC=i;
+            }
+        }
+        return LOC;
+    }
+}
+void display_P(int *p,int N){
+    if(N==0){
+        printf("\nArray is empty");
+    }
+    else{
+        printf("\nElements in Array");
+        int J=0;
+        while(J<N){
+            printf("\nLA[%d]:%d",J,*(p+J));
+            J=J+1;
+        }
+    }
+}
+void ShellSort(int LA[],int N){
+    int i,j,temp;
+    if(N==size){
+        printf("Array is empty");
+    }
+    else{
+            for(i=N/2;i;i--){
+            for(j=0;i+j<N;j++){
+                if(LA[j]>LA[i+j]){
+                    temp=LA[j];
+                    LA[j]=LA[i+j];
+                    LA[i+j]=temp;
+                }
+            }
+        }
+        printf("Array Sorted");
+    }
+    
+}
+
+void Radix(int LA[],int N){
+    printf("%d",N);
+    int pocket[10][N];
+    int i,j;
+     for(i=0;i<10;i++){
+        for(j=0;j<N;j++){
+            pocket[i][j]=-9999;
+        }
+    }
+
+    int k,temp,x=1,l,c;
+    for(k=1;k<=3;k++){
+        for(l=0;l<N;l++){
+            temp=(LA[l]/x)%10;
+            pocket[temp][l]=LA[l];
+        }
+        x=x*10;
+        c=0;
+        for(i=0;i<10;i++){
+            for(j=0;j<N;j++){
+                if(pocket[i][j]!=-9999){
+                    LA[c]=pocket[i][j];
+                    c=c+1;
+                }
+            }
+        }
+        for(i=0;i<10;i++){
+            for(j=0;j<N;j++){
+                pocket[i][j]=-9999;
+            }
+        }
     }
 }
