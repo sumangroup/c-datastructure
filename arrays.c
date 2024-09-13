@@ -331,34 +331,29 @@ void ShellSort(int LA[],int N){
 }
 
 void Radix(int LA[],int N){
-    printf("%d",N);
     int pocket[10][N];
     int i,j;
-     for(i=0;i<10;i++){
+    for(i=0;i<10;i++){
         for(j=0;j<N;j++){
             pocket[i][j]=-9999;
         }
     }
-
-    int k,temp,x=1,l,c;
+    int k,a,b,x=1,temp,l,c;
     for(k=1;k<=3;k++){
+
         for(l=0;l<N;l++){
             temp=(LA[l]/x)%10;
             pocket[temp][l]=LA[l];
         }
         x=x*10;
         c=0;
-        for(i=0;i<10;i++){
-            for(j=0;j<N;j++){
-                if(pocket[i][j]!=-9999){
-                    LA[c]=pocket[i][j];
+        for(a=0;a<10;a++){
+            for(b=0;b<N;b++){
+                if(pocket[a][b]!=-9999){
+                    LA[c]=pocket[a][b];
+                    pocket[a][b]=-9999;
                     c=c+1;
                 }
-            }
-        }
-        for(i=0;i<10;i++){
-            for(j=0;j<N;j++){
-                pocket[i][j]=-9999;
             }
         }
     }
