@@ -13,7 +13,7 @@ int MAX(int LA[], int N, int K);
 void ShellSort(int LA[], int N);
 void Radix(int LA[], int N);
 int Merge(int A[], int NA, int B[], int NB, int LA[]);
-int BinarySearch(int LA[],int N,int value);
+int BinarySearch(int LA[], int N, int value);
 int main()
 {
     int A[] = {12, 15, 21, 27, 30, 45};
@@ -150,12 +150,14 @@ int main()
         case 14:
             printf("\n Enter the value: ");
             scanf("%d", &value);
-            K=BinarySearch(LA,N,value);
-            if(K==-1){
-                printf("\n the value %d is not present",value);
+            K = BinarySearch(LA, N, value);
+            if (K == -1)
+            {
+                printf("\n the value %d is not present", value);
             }
-            else{
-                printf("\n the value %d is present at this location %d",LA[K],K);
+            else
+            {
+                printf("\n the value %d is present at this location %d", LA[K], K);
             }
         case 0:
             exit(0);
@@ -503,23 +505,35 @@ int Merge(int A[], int NA, int B[], int NB, int LA[])
 
     return N;
 }
-int BinarySearch(int LA[],int N,int value){
-    int K=-1;
-    int BEG=0;
-    int END=N-1;
-    int MID=(BEG+END)/2;
-    while((BEG<=END)&& (LA[MID]!=value)){
-        if(value>LA[MID]){
-            BEG=MID+1;
-        }
-        else{
-            END=MID-1;
-        }
-        MID=(BEG+END)/2;
+
+int BinarySearch(int LA[], int N, int value)
+{
+    int K = -1;
+    if (N == 0)
+    {
+        printf("\n Array an empty");
     }
-    if(LA[MID]==value){
-        K=MID;
-        return K;
+    else
+    {
+        int BEG = 0;
+        int END = N - 1;
+        int MID = (BEG + END) / 2;
+        while ((BEG <= END) && (LA[MID] != value))
+        {
+            if (value > LA[MID])
+            {
+                BEG = MID + 1;
+            }
+            else
+            {
+                END = MID - 1;
+            }
+            MID = (BEG + END) / 2;
+        }
+        if (LA[MID] == value)
+        {
+            K = MID;
+            return K;
+        }
     }
-   
 }
