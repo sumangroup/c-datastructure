@@ -299,7 +299,7 @@ void insertBeforeData(int searchData,int data){
     if(head==NULL){
         insertAtBeginning(data);
     }
-    else if((head->data==searchData) || (head->next==NULL)){
+    else if((head->data==data) || (head->next==NULL)){
         insertAtBeginning(data);
     }
     else{
