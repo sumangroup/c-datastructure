@@ -26,11 +26,14 @@ void insertAfterData(struct Node *temp, int searchData, int data);
 void insertBeforeData(struct Node *temp, int searchData, int data);
 void deleteAtBeginning(struct Node *temp);
 void deleteAtEnding(struct Node *temp);
-void deleteAfterLocation(struct Node *temp,int loc,int i);
-void deleteBeforeLocation(struct Node *temp,int loc,int i);
+void deleteAfterLocation(struct Node *temp, int loc, int i);
+void deleteBeforeLocation(struct Node *temp, int loc, int i);
+void deleteAfterData(struct Node *temp, int searchData);
+void deleteBeforeData(struct Node *temp, int searchData);
 void displayForward(struct Node *temp);
 void displayBackward(struct Node *temp);
 void displayBackwardTail(struct Node *temp);
+struct Node  *search(struct Node *temp,int searchData);
 void totalNode();
 void createHeadNode(int data);
 int main()
@@ -53,6 +56,9 @@ int main()
         printf("\n 12: delete at ending");
         printf("\n 13: delete after location");
         printf("\n 14: delete before location");
+        printf("\n 15: delete after data");
+        printf("\n 16: delete before data");
+        printf("\n 17: search data");
         printf("\n Enter the choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -132,13 +138,37 @@ int main()
         case 13:
             printf("\n Enter the location: ");
             scanf("%d", &loc);
-            deleteAfterLocation(head,loc,1);
+            deleteAfterLocation(head, loc, 1);
             break;
 
         case 14:
             printf("\n Enter the location: ");
             scanf("%d", &loc);
-            deleteBeforeLocation(head,loc,1);
+            deleteBeforeLocation(head, loc, 1);
+            break;
+
+        case 15:
+            printf("\n Enter the searchData: ");
+            scanf("%d", &searchData);
+            deleteAfterData(head, searchData);
+            break;
+
+        case 16:
+            printf("\n Enter the searchData: ");
+            scanf("%d", &searchData);
+            deleteBeforeData(head, searchData);
+            break;
+
+        case 17:
+            printf("\n Enter the searchData: ");
+            scanf("%d", &searchData);
+            struct Node *node=search(head, searchData);
+            if(node==NULL){
+                printf("\n Data not found or doubly linked list empty");
+            }
+            else{
+                printf("\n the data:%d",node->data);
+            }
             break;
         default:
             break;
@@ -408,93 +438,203 @@ void insertBeforeData(struct Node *temp, int searchData, int data)
     }
 }
 
-void deleteAtBeginning(struct Node *temp){
-    if(head==NULL){
+void deleteAtBeginning(struct Node *temp)
+{
+    if (head == NULL)
+    {
         printf("\n Doubly linked list is empty");
     }
-    else{
-        if(temp->next==NULL && temp->prev==NULL){
-            head=NULL;
-            tail=NULL;
-            count=0;
+    else
+    {
+        if (temp->next == NULL && temp->prev == NULL)
+        {
+            head = NULL;
+            tail = NULL;
+            count = 0;
             free(temp);
         }
-        else{
-            temp->next->prev=NULL;
-            head=temp->next;
+        else
+        {
+            temp->next->prev = NULL;
+            head = temp->next;
             count--;
             free(temp);
         }
     }
 }
 
-void deleteAtEnding(struct Node *temp){
-    if(head==NULL){
+void deleteAtEnding(struct Node *temp)
+{
+    if (head == NULL)
+    {
         printf("\n Doubly linked list is empty");
     }
-    else if(temp->next==NULL){
-        if(temp->next==NULL && temp->prev==NULL){
-            head=NULL;
-            tail=NULL;
-            count=0;
+    else if (temp->next == NULL)
+    {
+        if (temp->next == NULL && temp->prev == NULL)
+        {
+            head = NULL;
+            tail = NULL;
+            count = 0;
             free(temp);
         }
-        else{
-            temp->prev->next=NULL;
-            tail=temp->prev;
+        else
+        {
+            temp->prev->next = NULL;
+            tail = temp->prev;
             count--;
             free(temp);
         }
     }
-    else{
+    else
+    {
         deleteAtEnding(temp->next);
     }
 }
-void deleteAfterLocation(struct Node *temp,int loc,int i){
-    if(head==NULL){
+void deleteAfterLocation(struct Node *temp, int loc, int i)
+{
+    if (head == NULL)
+    {
         printf("\n Doubly linked list is empty");
     }
-    else if(count==1 || loc>=count){}
-    else if(i<loc){
-        deleteAfterLocation(temp->next,loc,++i);
+    else if (count == 1 || loc >= count)
+    {
     }
-    else{
-        struct Node *temp1=temp->next;
-        if(temp1->next==NULL){
-            temp->next=temp1->next;
-            tail=temp;
+    else if (i < loc)
+    {
+        deleteAfterLocation(temp->next, loc, ++i);
+    }
+    else
+    {
+        struct Node *temp1 = temp->next;
+        if (temp1->next == NULL)
+        {
+            temp->next = temp1->next;
+            tail = temp;
             count--;
             free(temp1);
         }
-        else{
-            temp1->next->prev=temp;
-            temp->next=temp1->next;
+        else
+        {
+            temp1->next->prev = temp;
+            temp->next = temp1->next;
             count--;
             free(temp1);
         }
     }
 }
-void deleteBeforeLocation(struct Node *temp,int loc,int i){
-    if(head==NULL){
+void deleteBeforeLocation(struct Node *temp, int loc, int i)
+{
+    if (head == NULL)
+    {
         printf("\n Doubly linked list is empty");
     }
-    else if(count==1 || loc==1){}
-    else if(i<loc){
-        deleteBeforeLocation(temp->next,loc,++i);
+    else if (count == 1 || loc == 1)
+    {
+    }
+    else if (i < loc)
+    {
+        deleteBeforeLocation(temp->next, loc, ++i);
+    }
+    else
+    {
+        struct Node *temp1 = temp->prev;
+        if (temp1->prev == NULL)
+        {
+            temp->prev = temp1->prev;
+            head = temp;
+            count--;
+            free(temp1);
+        }
+        else
+        {
+            temp1->prev->next = temp;
+            temp->prev = temp1->prev;
+            count--;
+            free(temp1);
+        }
+    }
+}
+void deleteAfterData(struct Node *temp, int searchData)
+{
+    if (head == NULL)
+    {
+        printf("\n Doubly linked list is empty");
+    }
+    else if ((temp->data == searchData && temp->next == NULL) ||
+             (temp->next == NULL) ||
+             (temp->next == NULL && temp->prev == NULL))
+    {
+    }
+    else if (temp->data == searchData)
+    {
+        struct Node *temp1 = temp->next;
+        if (temp1->next == NULL)
+        {
+            temp->next = temp1->next;
+            tail = temp;
+            free(temp1);
+            count--;
+        }
+        else
+        {
+            temp1->prev->next = temp1->next;
+            temp1->next->prev = temp1->prev;
+            free(temp1);
+            count--;
+        }
+    }
+    else
+    {
+        deleteAfterData(temp->next, searchData);
+    }
+}
+
+void deleteBeforeData(struct Node *temp, int searchData)
+{
+    if (head == NULL)
+    {
+        printf("\n Doubly linked list is empty");
+    }
+    else if ((temp->data == searchData && temp->prev == NULL) ||
+             (temp->next == NULL && temp->data!=searchData) ||
+             (temp->next == NULL && temp->prev == NULL))
+    {
+    }
+    else if (temp->data == searchData)
+    {
+        struct Node *temp1 = temp->prev;
+        if (temp1->prev == NULL)
+        {
+            temp->prev = temp1->prev;
+            head = temp;
+            free(temp1);
+            count--;
+        }
+        else
+        {
+            temp1->prev->next = temp1->next;
+            temp1->next->prev = temp1->prev;
+            free(temp1);
+            count--;
+        }
+    }
+    else
+    {
+        deleteBeforeData(temp->next, searchData);
+    }
+}
+struct Node  *search(struct Node *temp,int searchData){
+    if(head==NULL){
+        return NULL;
+    }
+    else if(temp->next==NULL && temp->data!=searchData){
+        return NULL;
+    }
+    else if(temp->data==searchData){
+            return temp;
     }
     else{
-        struct Node *temp1=temp->prev;
-        if(temp1->prev==NULL){
-            temp->prev=temp1->prev;
-            head=temp;
-            count--;
-            free(temp1);
-        }
-        else{
-            temp1->prev->next=temp;
-            temp->prev=temp1->prev;
-            count--;
-            free(temp1);
-        }
+        search(temp->next,searchData);
     }
 }
