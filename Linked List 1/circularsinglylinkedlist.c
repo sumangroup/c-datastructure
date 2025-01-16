@@ -16,6 +16,9 @@ void insertAfterLocation(struct Node *temp, int loc, int i, int data);
 void insertBeforeLocation(struct Node *temp, int loc, int i, int data);
 void insertAfterData(struct Node *temp,int searchData,int data);
 void insertBeforeData(struct Node *temp,int searchData,int data);
+void deleteAtBeginning(struct Node *temp);
+void deleteAtEnding(struct Node *temp);
+void deleteAfterLocation(struct Node *temp,int loc,int i);
 void display(struct Node *temp);
 int main()
 {
@@ -30,6 +33,9 @@ int main()
         printf("\n 5: insert beforelocation");
         printf("\n 6: insert after data");
         printf("\n 7: insert before data");
+        printf("\n 8: delete at beginning");
+        printf("\n 9: delete at ending");
+        printf("\n 10: delete after location");
         printf("\n Enter the choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -83,6 +89,20 @@ int main()
             printf("\n Enter the data: ");
             scanf("%d", &data);
             insertBeforeData(head, searchData,data);
+            break;
+
+        case 8:
+            deleteAtBeginning(head);
+            break;
+
+        case 9:
+            deleteAtEnding(head);
+            break;
+
+        case 10:
+            printf("\n Enter the location: ");
+            scanf("%d", &loc);
+            deleteAfterLocation(head,loc,1);
             break;
         default:
             break;
@@ -293,5 +313,63 @@ void insertBeforeData(struct Node *temp,int searchData,int data){
     }   
     else {
         insertBeforeData(temp->next,searchData,data);
+    }
+}
+
+void deleteAtBeginning(struct Node *temp){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if(temp->next==head && count==1){
+        head=NULL;
+        free(temp);
+        count--;
+    }
+    else if(temp->next==head){
+        struct Node *temp1=temp->next;
+        head=temp1->next;
+        temp->next=temp1->next;
+        free(temp1);
+        count--;
+    }
+    else{
+        deleteAtBeginning(temp->next);
+    }
+}
+void deleteAtEnding(struct Node *temp){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if(temp->next==head){
+        head=NULL;
+        free(temp);
+        count--;
+    }
+    else if(temp->next->next==head){
+        struct Node *temp1=temp->next;
+        temp->next=temp->next->next;
+        free(temp1);
+        count--;
+    }
+    else{
+        deleteAtEnding(temp->next);
+    }
+}
+void deleteAfterLocation(struct Node *temp,int loc,int i){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if(count==1 || loc>count){}
+    else if(loc==count){
+        deleteAtBeginning(temp);
+    }
+    else if(i<loc){
+        deleteAfterLocation(temp->next,loc,++i);
+    }
+    else{
+        struct Node *temp1=temp->next;
+        temp->next=temp1->next;
+        free(temp1);
+        count--;
     }
 }
