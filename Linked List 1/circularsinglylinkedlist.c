@@ -19,6 +19,10 @@ void insertBeforeData(struct Node *temp,int searchData,int data);
 void deleteAtBeginning(struct Node *temp);
 void deleteAtEnding(struct Node *temp);
 void deleteAfterLocation(struct Node *temp,int loc,int i);
+void deleteBeforeLocation(struct Node *temp,int loc,int i);
+void searchNode(struct Node *temp,int searchData);
+void deleteAfterData(struct Node *temp,int searchData);
+void deleteBeforeData(struct Node *temp,int searchData);
 void display(struct Node *temp);
 int main()
 {
@@ -36,6 +40,10 @@ int main()
         printf("\n 8: delete at beginning");
         printf("\n 9: delete at ending");
         printf("\n 10: delete after location");
+        printf("\n 11: delete before location");
+        printf("\n 12: search Node");
+        printf("\n 13: delete after data");
+        printf("\n 14: delete before data");
         printf("\n Enter the choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -103,6 +111,30 @@ int main()
             printf("\n Enter the location: ");
             scanf("%d", &loc);
             deleteAfterLocation(head,loc,1);
+            break;
+        
+        case 11:
+            printf("\n Enter the location: ");
+            scanf("%d",&loc);
+            deleteBeforeLocation(head,loc,1);
+            break;
+
+        case 12:
+            printf("\n Enter the searchData: ");
+            scanf("%d",&searchData);
+            searchNode(head,searchData);
+            break;
+
+        case 13:
+            printf("\n Enter the searchData: ");
+            scanf("%d",&searchData);
+            deleteAfterData(head,searchData);
+            break;
+        
+        case 14:
+            printf("\n Enter the searchData: ");
+            scanf("%d",&searchData);
+            deleteBeforeData(head,searchData);
             break;
         default:
             break;
@@ -372,4 +404,95 @@ void deleteAfterLocation(struct Node *temp,int loc,int i){
         free(temp1);
         count--;
     }
+}
+void deleteBeforeLocation(struct Node *temp,int loc,int i){
+    if(head==NULL){
+         printf("\n Circular singly linked list empty");
+    }
+    else if(loc==1 || loc>count){
+        // do nothing
+    }
+    else if(loc==2){
+        deleteAtBeginning(temp);
+    }
+    else if(i<loc-2){
+        deleteBeforeLocation(temp->next,loc,++i);
+    }
+    else{
+        struct Node *temp1=temp->next;
+        temp->next=temp1->next;
+        free(temp1);
+        count--;
+    }
+}
+void searchNode(struct Node *temp,int searchData){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if(temp->data != searchData && temp->next==head){
+        printf("\n Data not found");
+    }
+    else if(temp->data ==searchData){
+        printf("\n Data found: %d",temp->data);
+        //printf("Address: %x Data: %d",temp,temp->data);
+    }
+    else{
+        searchNode(temp->next,searchData);
+    }
+}
+void deleteAfterData(struct Node *temp,int searchData){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if(count==1 && temp->data==searchData){
+        // do nothing
+    }
+    else if(temp->data!=searchData && temp->next==head){
+        printf("\n Data not found");
+    }
+    else if(temp->data==searchData){
+        struct Node *temp1=temp->next;
+        if(temp1==head){
+            head=temp1->next;
+            temp->next=head;
+            free(temp1);
+            count--;
+        }
+        else{
+            temp->next=temp1->next;
+            free(temp1);
+            count--;
+        }
+    }   
+    else{
+        deleteAfterData(temp->next,searchData);
+    }
+}
+void deleteBeforeData(struct Node *temp,int searchData){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    else if((count==1 && temp->data==searchData) || (count!=1 && temp->data==searchData) ){
+        // do nothing
+    }
+    else if(temp->data!=searchData && temp->next==head){
+        printf("\n Data not found");
+    }
+    else if(temp->data!=searchData && temp->next==head){
+        printf("\n Data not found");
+    }
+    else if(temp->next->next->data==searchData){
+        struct Node *temp1=temp->next;
+        temp->next=temp1->next;
+        free(temp1);
+        count--;
+    }
+    else if(temp->next->data==searchData){
+        deleteAtBeginning(temp);
+    }
+    
+    else{
+        deleteBeforeData(temp->next,searchData);
+    }
+
 }
