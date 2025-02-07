@@ -17,15 +17,14 @@ struct Node *head=NULL;
 struct Node *createNode(int data, struct Node *next,struct EdgeList *headedgelist);
 void createHeadNode(int data);
 
-
-struct EdgeList *createNode_EdgeList(struct Node *node);
-void createHeadNode_EdgeList(struct Node *startNode,struct Node *endnode);
-
 void display(struct Node *temp);
 void insertAtEnding(struct Node *temp, int data);
 void addNode(struct Node *temp, int data);
-void addEdge(struct Node *startNode,struct Node *endNode,struct EdgeList *temp);
 struct Node *searchNode(struct Node *temp,int searchData);
+
+void addEdge(struct Node *startNode,struct Node *endNode,struct EdgeList *edgelist);
+struct EdgeList *createEdgelist(struct Node *endNode,struct EdgeList *next);
+void createHeadNode_edgelist(struct Node *startNode,struct Node *endNode);
 
 int main(){
     int data,choice,start,end;
@@ -102,24 +101,8 @@ struct Node *createNode(int data, struct Node *next,struct EdgeList *headedgelis
     return newNode;
 }
 
-struct EdgeList *createNode_EdgeList(struct Node *endnode){
-   struct EdgeList *newNode=(struct EdgeList*)malloc(sizeof(struct EdgeList));
-   if(newNode!=NULL){
-    newNode->node=endnode;
-    newNode->nextedge=NULL;
-   }
-   return newNode;
-}
-void createHeadNode_EdgeList(struct Node *startNode,struct Node *endnode){
-    struct EdgeList *newNode=createNode_EdgeList(endnode);
-    if(newNode==NULL){
-        printf("\n unable to allocate the memory");
-    }
-    else{
-        startNode->edgelist=newNode;
-        newNode->nextedge=newNode;
-    }
-}
+
+
 void createHeadNode(int data)
 {
     struct Node *newNode = createNode(data, NULL,NULL);
@@ -182,20 +165,41 @@ struct Node *searchNode(struct Node *temp,int searchData){
     }
 }
 
-void addEdge(struct Node *startNode,struct Node *endNode,struct EdgeList *temp){
-    if(temp==NULL){
-        createHeadNode_EdgeList(startNode,endNode);
+
+void addEdge(struct Node *startNode,struct Node *endNode,struct EdgeList *edgelist){
+    if(edgelist==NULL){
+        createHeadNode_edgelist(startNode,endNode);
     }
-    else if(temp->nextedge==startNode->edgelist){
-        struct EdgeList *newNode=createNode_EdgeList(endNode);
-        if(newNode==NULL){
+    else if(startNode->edgelist==edgelist->nextedge){
+        struct EdgeList *newedge=createEdgelist(endNode,startNode->edgelist);
+        if(newedge==NULL){
             printf("\n unable to allocate the memory");
         }
         else{
-            newNode->nextedge=startNode->edgelist;
+            edgelist->nextedge=newedge;
         }
     }
     else{
-        addEdge(startNode,endNode,temp->nextedge);
+        addEdge(startNode,endNode,edgelist->nextedge);
+    }
+    
+}
+
+void createHeadNode_edgelist(struct Node *startNode,struct Node *endNode){
+    struct EdgeList *newedge=createEdgelist(endNode,NULL);
+    if(newedge==NULL){
+        printf("\n unable to allocate the memory");
+    }
+    else{
+        newedge->nextedge=newedge;
+        startNode->edgelist=newedge;
+    }
+}
+
+struct EdgeList *createEdgelist(struct Node *endNode,struct EdgeList *next){
+    struct EdgeList *newEdge=(struct EdgeList*)malloc(sizeof(struct EdgeList));
+    if(newEdge!=NULL){
+        newEdge->node=endNode;
+        newEdge->nextedge=next;
     }
 }
