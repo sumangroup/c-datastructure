@@ -23,6 +23,7 @@ void deleteBeforeLocation(struct Node *temp,int loc,int i);
 void searchNode(struct Node *temp,int searchData);
 void deleteAfterData(struct Node *temp,int searchData);
 void deleteBeforeData(struct Node *temp,int searchData);
+void deleteData(struct Node *temp,int searchData);
 void display(struct Node *temp);
 int main()
 {
@@ -44,6 +45,7 @@ int main()
         printf("\n 12: search Node");
         printf("\n 13: delete after data");
         printf("\n 14: delete before data");
+        printf("\n 15: delete data");
         printf("\n Enter the choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -135,6 +137,12 @@ int main()
             printf("\n Enter the searchData: ");
             scanf("%d",&searchData);
             deleteBeforeData(head,searchData);
+            break;
+
+        case 15:
+            printf("\n Enter the searchData: ");
+            scanf("%d",&searchData);
+            deleteData(head,searchData);
             break;
         default:
             break;
@@ -495,4 +503,31 @@ void deleteBeforeData(struct Node *temp,int searchData){
         deleteBeforeData(temp->next,searchData);
     }
 
+}
+
+void deleteData(struct Node *temp,int searchData){
+    if(head==NULL){
+        printf("\n Circular singly linked list empty");
+    }
+    
+    else if(temp->next->data==searchData){
+        struct Node *temp1=temp->next;
+        if(temp1==head){
+            temp->next=temp1->next;
+            head=temp->next;
+            free(temp1);
+            count--;
+        }
+        else{
+             temp->next=temp1->next;
+             free(temp1);
+             count--;
+        }
+    }
+    else if(temp->data!=searchData && temp->next==head){
+
+    }
+    else{
+        deleteData(temp->next,searchData);
+    }
 }

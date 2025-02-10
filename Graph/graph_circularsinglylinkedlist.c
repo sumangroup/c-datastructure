@@ -25,6 +25,7 @@ struct Node *searchNode(struct Node *temp,int searchData);
 void addEdge(struct Node *startNode,struct Node *endNode,struct EdgeList *edgelist);
 struct EdgeList *createEdgelist(struct Node *endNode,struct EdgeList *next);
 void createHeadNode_edgelist(struct Node *startNode,struct Node *endNode);
+void display_edgelist(struct Node *startNode,struct EdgeList *temp);
 
 int main(){
     int data,choice,start,end;
@@ -62,7 +63,7 @@ int main(){
             printf("\n Enter the end node: ");
             scanf("%d",&end);
             endNode=searchNode(head,end);
-            printf("startnode: %x",endNode);
+            printf("endnode: %x",endNode);
             addEdge(startNode,endNode,startNode->edgelist);
             break;
         default:
@@ -77,17 +78,33 @@ void display(struct Node *temp)
 {
     if (head == NULL)
     {
-        printf("\n Circular Singly Linked list is empty");
+        printf("\n Graph is empty");
     }
     else if (head == temp->next)
     {
-        printf("%x %d %x\n",temp, temp->data,temp->edgelist);
+        printf("\n%d: ",temp->data);
+        display_edgelist(temp,temp->edgelist);
     }
     else
     {
-        printf("%x %d %x\n", temp,temp->data,temp->edgelist);
+        printf("\n%d: ", temp->data);
+        display_edgelist(temp,temp->edgelist);
         display(temp->next);
     }
+}
+
+void display_edgelist(struct Node *startNode,struct EdgeList *temp){
+    if(temp==NULL){
+         //printf("\n edge list is empty");
+    }
+    else if(startNode->edgelist==temp->nextedge){
+        printf("\t%d",temp->node->data);
+    }
+    else{
+        printf("\t%d",temp->node->data);
+        display_edgelist(startNode,temp->nextedge);
+    }
+
 }
 struct Node *createNode(int data, struct Node *next,struct EdgeList *headedgelist)
 {
@@ -154,11 +171,11 @@ struct Node *searchNode(struct Node *temp,int searchData){
      if(head==NULL){
         printf("\n Graph is empty");
     }
-    else if(temp->next==head){
-
-    }
     else if((temp->data==searchData) ){
         return temp;
+    }
+    else if(temp->next==head){
+
     }
     else{
         searchNode(temp->next,searchData);
